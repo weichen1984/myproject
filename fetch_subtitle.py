@@ -49,7 +49,7 @@ def find_link(mid):
     if r.status_code == 200:
         soup = BS(r.content)
         subs = soup.select('a[href^="/en/subtitleserve/sub/"]')
-        return 'http://www.opensubtitles.org' + subs[0]['href']
+        return 'http://www.opensubtitles.org' + subs[1]['href']
     else:
         print 'scraping subtitle link fail'
         return False
@@ -57,15 +57,19 @@ def find_link(mid):
 def fetch_subtitle():
     ids = pickle.load(open('data/ids.pkl'))
     flag = []
+    fetched = os.listdir('data/subtitles/')
     cnt = 0
     for i in ids:
         cnt += 1
-        print cnt
-        surl = find_link(i)
-        if surl:
-            flag.append(download_file(surl, i, 'data/subtitles'))
-        else:
-            flag.append(surl)
+        if i+'.srt' not in fetched:
+            print cnt
+            surl = find_link(i)
+            if surl:
+                flag.append(download_file(surl, i, 'data/subtitles'))
+            else:
+                flag.append(surl)
+        if cnt == 35:
+            break
     pickle.dump(open('data/flag.pkl', 'wb'))
 
 
