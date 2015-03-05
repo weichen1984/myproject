@@ -5,3 +5,9 @@
 * Continue getting more data, let it run in the background
 * Start to build a pipeline: clean data (tokenize), practice tf-idf, apply NMF, and investigate features
 * Apply the pipeline to a small dataset (subtitles from 2013)
+
+
+## 3/4 Wednesday
+* Solving the pickle issue
+* Get box office data
+* Investigate the results from running on a smaller dataset

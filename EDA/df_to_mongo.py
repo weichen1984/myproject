@@ -2,7 +2,7 @@ from pymongo import MongoClient
 import cPickle as pkl
 
 c = MongoClient()
-db = c['movies']
+db = c['temp']
 movie = db.movies
 
 df = pkl.load(open('../data/movies.df'))

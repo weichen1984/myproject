@@ -18,5 +18,19 @@ Wrote a new script to scrape subtitles from [subscene](subscene.com)
 
 Wrote a code to parse a subtitle file in srt form to text and found MapReduce is not as fast as plain for loops
 
- 
+
+## 3/3/2014
+
+Finished downloading subtitles from [subscene](subscene.com), didn't get as many extra as I expected so have to deal with what I have
+
+Encountered decoding/encoding problems when extracting texts to strings, created a dictionary for encoding type for each file
+
+Built a primary pipline (not including any parameter tweaking) but had trouble pickle the model
+
+Ran the model and got some results, since couldn't pickle, I got distracted from actually examining what I got
+
+
+
+
+
 

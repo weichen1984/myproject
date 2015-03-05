@@ -175,7 +175,7 @@ def fetch_missing_subtitle(years, outfile='test.df'):
             # if mid + '.srt' not in fetched:
             if missing.find({'_id': nid}).count() == 0:
 
-                print count
+                print year, count
                 dct = {'_id': nid, 'id': mid, 'year': year, 'title': title}
                 flg, surl, comment = find_link(title, year)
                 dct['comment'] = comment
