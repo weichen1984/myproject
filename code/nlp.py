@@ -9,14 +9,16 @@ import numpy as np
 import pandas as pd
 import re
 from nltk.tokenize import RegexpTokenizer
-import pickle
+import dill as pickle
+from nltk.corpus import names, stopwords
+from nltk.stem import WordNetLemmatizer
+from nltk.stem.snowball import SnowballStemmer
 
-    # def tokenize(self, doc):
-    #     '''
-    #     use NLTK RegexpTokenizer
-    #     '''
-    #     tokenizer = RegexpTokenizer("[\w']+")
-    #     return tokenizer.tokenize(self.clean(doc))
+
+
+wordnet = WordNetLemmatizer()
+stemmer = SnowballStemmer("english")
+
 
 class Movier(object):
 
@@ -40,6 +42,15 @@ class Movier(object):
         '''
         regex = re.compile('{\d+}|<.+?>|((([A-Za-z]{3,9}:(?:\/\/)?)(?:[\-;:&=\+\$,\w]+@)?[A-Za-z0-9\.\-]+|(?:www\.|[\-;:&=\+\$,\w]+@)[A-Za-z0-9\.\-]+)((?:\/[\+~%\/\.\w\-_]*)?\??(?:[\-\+=&;%@\.\w_]*)#?(?:[\.\!\/\\\w]*))?)')
         return [regex.sub(' ', doc) for doc in docs]
+
+
+    def tokenize(self, doc):
+        '''
+        use NLTK RegexpTokenizer
+        '''
+        tokenizer = RegexpTokenizer("[\w'\.\-]{2,}\w")
+        return [stemmer.stem(x) for x in tokenizer.tokenize(doc)]
+
 
     # def apply_tfidf(self, docs, **kwargs):
     #     '''
@@ -76,7 +87,10 @@ class Movier(object):
         clean_docs = self.clean(docs)
 
         print 'running tfidf ......'
-        self.tfidf = TfidfVectorizer(**self.kw_tfidf)
+        if 'tokenizer' not in kw_tfidf:
+            self.tfidf = TfidfVectorizer(tokenizer=self.tokenize, **self.kw_tfidf)
+        else:
+            self.tfidf = TfidfVectorizer(**self.kw_tfidf)
         self.X = self.tfidf.fit_transform(clean_docs)
 
         print 'running NMF ......'
@@ -120,15 +134,16 @@ class Movier(object):
 
 
 if __name__ == '__main__':
+    # names_words = [x.lower() for x in names.words()]
     df = pd.read_csv('../data/txt/sub_text_2013.txt', delimiter='\t')
     docs = list(df.iloc[:, 1].values)
     kw_tfidf = {'max_df': 0.8, 'stop_words': 'english', 'min_df':10}
-    kw_nmf = {'n_components': 100}
+    kw_nmf = {'n_components': 100, 'max_iter': 300}
     kw_kmeans = {'n_clusters': 20}
     model = Movier(kw_tfidf=kw_tfidf, kw_nmf=kw_nmf, kw_kmeans=kw_kmeans)
     model.fit(docs)
     # model.pickler('model2013.pkl')
-    pickle.dump(model, open('model2013_nmf100.pkl', 'w'))
+    pickle.dump(model, open('model2013_nmf100iter300_tokstem.pkl', 'w'))
 
 
 

@@ -29,6 +29,10 @@ Built a primary pipline (not including any parameter tweaking) but had trouble p
 
 Ran the model and got some results, since couldn't pickle, I got distracted from actually examining what I got
 
+## 3/4/2014
+
+
+
 
 
 

@@ -14,7 +14,7 @@ def cp_sub(year):
     mids = movie['id'].values
     sids = movie['sub_id'].values
     outdir = todir + str(year) + '/'
-    if not os.path.isdir(outdir):
+    if (len(mids) != 0) & (not os.path.isdir(outdir)):
         os.makedirs(outdir)
     for mid, isid in zip(mids, sids):
         sid = int(isid)
@@ -25,7 +25,7 @@ def cp_sub(year):
 def cp_subs(years):
     for year in years:
         print 'year = ', year
-        cp.sub(year)
+        cp_sub(year)
 
 if __name__ == '__main__':
-    cp_sub(2013)
+    cp_subs(range(1860, 2015))
