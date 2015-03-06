@@ -12,14 +12,14 @@ Matched the subtitle data with the scraped IMDb data and found that only 10789 m
 ![movies per year](nmovies_vs_year.png)
 
 
-## 3/2/2014
+## 3/2/2015
 
 Wrote a new script to scrape subtitles from [subscene](subscene.com)
 
 Wrote a code to parse a subtitle file in srt form to text and found MapReduce is not as fast as plain for loops
 
 
-## 3/3/2014
+## 3/3/2015
 
 Finished downloading subtitles from [subscene](subscene.com), didn't get as many extra as I expected so have to deal with what I have
 
@@ -29,7 +29,18 @@ Built a primary pipline (not including any parameter tweaking) but had trouble p
 
 Ran the model and got some results, since couldn't pickle, I got distracted from actually examining what I got
 
-## 3/4/2014
+## 3/4/2015
+
+Started parsing srt files to texts
+
+Found some interesting features such as curse words
+
+Got suggestion from Alix about pickling with dill
+
+## 3/5/2015
+
+
+
 
 
 

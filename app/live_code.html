@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="lib/d3.js"></script>
+  <script src="lib/nv.d3.js"></script>
+
+    <link href="lib/nv.d3.css" rel="stylesheet" type="text/css">
+  <style>
+  text {
+            font: 12px sans-serif;
+        }
+        svg {
+            display: block;
+        }
+        html, body, #chart1, svg {
+            margin: 0px;
+            padding: 0px;
+            height: 100%;
+            width: 100%;
+        }
+   </style>
+</head>
+<body>
+
+    <div id="chart1">
+        <svg></svg>
+    </div>
+
+    <script>
+        var data = [
+            {
+                key: "Country D3 production",
+                values: [
+                    {
+                        "label" : "Argentina" ,
+                        "value" : 29.765957771107
+                    } ,
+                    {
+                        "label" : "Sweden" ,
+                        "value" : 0
+                    } ,
+                    {
+                        "label" : "China" ,
+                        "value" : 32.807804682612
+                    } ,
+                    {
+                        "label" : "US" ,
+                        "value" : 196.45946739256
+                    } ,
+                    {
+                        "label" : "England" ,
+                        "value" : 0.19434030906893
+                    } ,
+                    {
+                        "label" : "France" ,
+                        "value" : 98.079782601442
+                    }
+                ]
+            }
+        ];
+
+        nv.addGraph(function() {
+            var chart = nv.var chart2 = nv.models.discreteBarChart();
+
+            chart2.y(function(d) { return d.label });
+            chart2.x(function(d) { return d.value });models.discreteBarChart();
+
+            chart.x(function(d) { return d.label });
+            chart.y(function(d) { return d.value });
+
+
+
+            d3.select('#chart1 svg')
+                .datum(data)
+                .call(chart);
+
+
+            nv.utils.windowResize(chart.update);
+            return chart;
+        });
+    </script>
+</body>
+</html>

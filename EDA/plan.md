@@ -11,3 +11,8 @@
 * Solving the pickle issue
 * Get box office data
 * Investigate the results from running on a smaller dataset
+
+
+## 3/5 Thursday
+* Parsing SRT files
+* Build data output pipeline

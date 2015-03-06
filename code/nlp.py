@@ -137,13 +137,13 @@ if __name__ == '__main__':
     # names_words = [x.lower() for x in names.words()]
     df = pd.read_csv('../data/txt/sub_text_2013.txt', delimiter='\t')
     docs = list(df.iloc[:, 1].values)
-    kw_tfidf = {'max_df': 0.8, 'stop_words': 'english', 'min_df':10}
+    kw_tfidf = {'max_df': 0.8, 'stop_words': 'english', 'min_df':10, 'ngram_range':(1,2)}
     kw_nmf = {'n_components': 100, 'max_iter': 300}
     kw_kmeans = {'n_clusters': 20}
     model = Movier(kw_tfidf=kw_tfidf, kw_nmf=kw_nmf, kw_kmeans=kw_kmeans)
     model.fit(docs)
     # model.pickler('model2013.pkl')
-    pickle.dump(model, open('model2013_nmf100iter300_tokstem.pkl', 'w'))
+    pickle.dump(model, open('model2013_nmf100iter300_tokstem_2gram.pkl', 'w'))
 
 
 

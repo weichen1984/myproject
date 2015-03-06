@@ -21,7 +21,7 @@ def check_text(line):
         if line.isdigit():
             return ''
         else:
-            return line
+            return ' '.join(line.split())
 
 def extract_text(fn, path, encoding):
     tt = []
@@ -49,27 +49,10 @@ def extract_file(fn, path):
             r = chardet.detect(content)
             charenc = r['encoding']
             text = extract_text(fn, path, charenc)
-            # tt = []
-            # with io.open(path + fn, 'r', encoding=charenc) as g:
-            #     lines = g.readlines()
-            #     for x in lines:
-            #         y = check_text(x)
-            #         if y:
-            #             tt.append(y)
-            #     text = ' '.join(tt).strip()
         except:
-            try
+            try:
                 charenc = None
-                # encode.save({'_id': nid, 'id': mid, 'encode': charenc})
                 text = extract_text(fn, path, charenc)
-                # tt = []
-                # with io.open(path + fn, 'r', encoding=charenc) as g:
-                #     lines = g.readlines()
-                #     for x in lines:
-                #         y = check_text(x)
-                #         if y:
-                #             tt.append(y)
-                #     text = ' '.join(tt).strip()
             except:
                 fn1 = mid + '.rar'
                 os.rename(path + fn, path + fn1)
@@ -85,7 +68,6 @@ def extract_file(fn, path):
 
         encode.save({'_id': nid, 'id': mid, 'encode': charenc})
         return mid, text
-            # return mid, text
 
 
 
@@ -94,9 +76,10 @@ def extract_year(year):
     fns = os.listdir(path)
     with open(raw_dir + 'subtext' + str(year), 'w') as fout:
         for fn in fns:
-            print 'year = ' + str(year) + 'parsing ' + fn
-            mid, text = extract_file(fn, path)
-            fout.write(mid + '\t' + text + '\n')
+            if fn[-4:] == '.srt':
+                print 'year = ' + str(year) + 'parsing ' + fn
+                mid, text = extract_file(fn, path)
+                fout.write(mid + '\t' + text + '\n')
 
 def extract_years(years):
     for year in years:
@@ -104,7 +87,8 @@ def extract_years(years):
         extract_year(year)
 
 if __name__ == '__main__':
-    extract_years(range(2004, 2015))
+    extract_years(range(2005, 2015))
+    # extract_year(1993)
 
 
 
