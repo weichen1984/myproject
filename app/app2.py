@@ -13,7 +13,37 @@ import matplotlib.pyplot as plt
 from movier import Movier
 
 
+'''
+Globals
+'''
+
 a = Movier() # used to clean the input srt file
+d3header = '''
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <meta charset="utf-8">
+      <script src="../static/d3.js"></script>
+      <script src="../static/nv.d3.js"></script>
+      <link href="../static/nv.d3.css" rel="stylesheet" type="text/css">
+      <style>
+        text {
+          font: 12px sans-serif;
+        }
+        svg {
+          display: block; 
+        }
+        html, body, #chart, svg{
+          margin: 0px;
+          padding: 0px;
+          height: 100%;
+          width: 100%;
+        }
+      </style>
+    </head>
+    '''
+
+    
 
 def check_text(line):
     '''
@@ -62,12 +92,8 @@ def extract_file(fn):
 
     return text
 
-def form_predict_page(lst, indices):
-    '''
-    construct webpage from the template
-    '''
-    with open('templates/predict_page.html', 'r') as f:
-        return f.read() % tuple(lst + indices)
+
+
 
 @app.route('/')
 def index():
@@ -110,7 +136,7 @@ def predict_page():
     text = extract_file(fsave)
     text = ' '.join(a.tokenize(a.clean([text])[0]))
     W, ic = model.transfrom_predict([text])
-    indices = list(np.argsort(W)[0][::-1][:5])
+    indices = list(np.argsort(W)[0][::-1][:10])
     thelist = []
     thesum = 0.
     for ind in indices:
@@ -120,9 +146,98 @@ def predict_page():
     thelist.append("Others")
     thelist.append(str(W[0].sum() - thesum))
     thetuple = tuple(thelist)
-    # print "the tuple " + str(len(thetuple))
+    print "the tuple " + str(len(thetuple))
+    body1 = """
+        <body>
+        """
+    svg_pie = """
+        <div id="chart">
+            <svg class="pie"></svg>
+            <svg class="area"></svg>
+        </div>
+        """
+    script1 = """
+        <script>
+        """
+    data = """
+        var data = [
+        {
+            "label": "%s",
+            "value": %s
+        },
+        {
+            "label": "%s",
+            "value": %s
+        },
+        {
+            "label": "%s",
+            "value": %s
+        },
+        {
+            "label": "%s",
+            "value": %s
+        },
+        {
+            "label": "%s",
+            "value": %s
+        },
+        {
+            "label": "%s",
+            "value": %s
+        },
+        {
+            "label": "%s",
+            "value": %s
+        },
+        {
+            "label": "%s",
+            "value": %s
+        },
+        {
+            "label": "%s",
+            "value": %s
+        },
+        {
+            "label": "%s",
+            "value": %s
+        },
+        {
+            "label": "%s",
+            "value": %s
+        }
+        ];
+    """ % thetuple
 
-    output = form_predict_page(thelist, indices)
+
+    d3pie = """
+        nv.addGraph(function(){
+            var chart = nv.models.pieChart()
+                .x(function(d) {return d.label})
+                .y(function(d) {return d.value})
+                .showLabels(true);
+            d3.select("#chart svg.pie")
+                .datum(data)
+                .transition().duration(350)
+                .call(chart);
+            return chart;
+            });
+        """
+    script2 = """
+        </script>
+        """
+
+    body2 = """
+        </body>
+        """
+
+    html2 = """
+        </html>
+        """
+
+    output = d3header + body1 + svg_pie + script1 + data + d3pie + script2 + body2 + html2
+    g = open("templates/test.html", "w")
+    g.write(output)
+    g.close()
 
     return output
 

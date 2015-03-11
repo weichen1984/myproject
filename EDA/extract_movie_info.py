@@ -38,7 +38,7 @@ def add_opensub():
         y = x.copy()
         y.pop('flag')
         y.pop('sub_id')
-        y['url'] = 'http:www.imdb.com/title/tt' + y['id'] + '/'
+        y['url'] = 'http://www.imdb.com/title/tt' + y['id'] + '/'
         y['genre'] = get_genre(y['title_text'])
         movie_info.save(y)
 
@@ -51,7 +51,7 @@ def add_subscene():
         y = opensub.find_one({'_id': nid}).copy()
         y.pop('flag')
         y.pop('sub_id')
-        y['url'] = 'http:www.imdb.com/title/tt' + y['id'] + '/'
+        y['url'] = 'http://www.imdb.com/title/tt' + y['id'] + '/'
         y['genre'] = get_genre(y['title_text'])
         movie_info.save(y)
 

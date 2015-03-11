@@ -100,10 +100,24 @@ class Movier(object):
         self.kmeans = KMeans(**self.kw_kmeans)
         self.kmeans.fit(self.X)
 
-        print 'getting the top 50 words for the features ......'
+        # print 'running MDS ......'
+        # self.mds = MDS(n_components=2, dissimilarity='precomputed', random_state=1)
+        # dist = 1 - cosine_similarity(self.W)
+        # self.coords = self.mds.fit_transform(dist)
+
+        # print 'running 2nd Kmeans ......'
+        # dist1 = 1 - cosine_similarity(self.X)
+        # self.kmeans2 = KMeans(**self.kw_kmeans)
+        # self.kmeans2.fit(self.X)
+
+        # print 'running 2nd MDS ......'
+        # self.mds2 = MDS(n_components=2, dissimilarity='precomputed', random_state=1)
+        # dist2 = 1 - cosine_similarity(self.X)
+        # self.coords2 = self.mds2.fit_transform(dist2)
+
         self.top_n_words(50)
 
-    def transform_predict(self, docs):
+    def transfrom_predict(self, docs):
         X = self.tfidf.transform(docs)
         W = self.nmf.transform(X)
         ic = self.kmeans.predict(X)
@@ -128,6 +142,20 @@ class Movier(object):
 
 
 
+# def clean(docs):
+#     '''
+#     get rid of <> and {} tags, links (with and without)
+#     '''
+#     regex = re.compile('{\d+}|\w+\.com|<.+?>|((([A-Za-z]{3,9}:(?:\/\/)?)(?:[\-;:&=\+\$,\w]+@)?[A-Za-z0-9\.\-]+|(?:www\.|[\-;:&=\+\$,\w]+@)[A-Za-z0-9\.\-]+)((?:\/[\+~%\/\.\w\-_]*)?\??(?:[\-\+=&;%@\.\w_]*)#?(?:[\.\!\/\\\w]*))?)')
+#     return [regex.sub(' ', doc) for doc in docs]
+
+
+# def tokenize(doc):
+#     '''
+#     use NLTK RegexpTokenizer
+#     '''
+#     tokenizer = RegexpTokenizer("[\w'\.\-]{2,}\w")
+#     return [stemmer.stem(x) for x in tokenizer.tokenize(doc)]
 
 
 def random_load_data(n):
@@ -144,6 +172,17 @@ def random_load_data(n):
             dfs.append(dft.iloc[indices])
     df = pd.concat(dfs, axis=0)
     return df
+
+# def main():
+#     df = pd.read_csv('../data/txt/clean/subtext2013', delimiter='\t')
+#     docs = list(df.iloc[:, 1].values)
+#     kw_tfidf = {'max_df': 0.8, 'stop_words': 'english', 'min_df':10, 'ngram_range':(1,1)}
+#     kw_nmf = {'n_components': 100, 'max_iter': 300}
+#     kw_kmeans = {'n_clusters': 20}
+#     model = Movier(kw_tfidf=kw_tfidf, kw_nmf=kw_nmf, kw_kmeans=kw_kmeans)
+#     model.fit(docs)
+#     # model.pickler('model2013.pkl')
+#     pickle.dump(model, open('model2013_nmf100iter300_2methods.pkl', 'w'))
 
 
 def build_model(n):
@@ -172,18 +211,16 @@ def load_data():
 def build_all():
     df = load_data()
     docs = list(df.iloc[:, 1].values)
-    kw_tfidf = {'max_df': 0.5, 'stop_words': 'english', 'min_df':10, 'tokenizer':None, 'token_pattern': "\w{3,}"}
+    kw_tfidf = {'max_df': 0.9, 'stop_words': 'english', 'min_df':0.015, 'tokenizer':None, 'token_pattern': "\w{3,}"}
     kw_nmf = {'n_components': 200, 'max_iter': 300}
     kw_kmeans = {'n_clusters': 30}
     model = Movier(kw_tfidf=kw_tfidf, kw_nmf=kw_nmf, kw_kmeans=kw_kmeans)
     model.fit(docs)
-    pickle.dump(model, open('all_maxdf05_mindf10.pkl', 'wb'))
+    pickle.dump(model, open('all_maxdf09.pkl', 'wb'))
 
 if __name__ == '__main__':
     # build_model(40)
     build_all()
-    # df = load_data()
-    # docs = list(df.iloc[:, 1].values)
 
 
 
