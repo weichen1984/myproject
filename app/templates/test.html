@@ -1,0 +1,98 @@
+
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <meta charset="utf-8">
+      <script src="../static/d3.js"></script>
+      <script src="../static/nv.d3.js"></script>
+      <link href="../static/nv.d3.css" rel="stylesheet" type="text/css">
+      <style>
+        text {
+          font: 12px sans-serif;
+        }
+        svg {
+          display: block; 
+        }
+        html, body, #chart, svg{
+          margin: 0px;
+          padding: 0px;
+          height: 100%;
+          width: 100%;
+        }
+      </style>
+    </head>
+    
+        <body>
+        
+        <div id="chart">
+            <svg class="pie"></svg>
+            <svg class="area"></svg>
+        </div>
+        
+        <script>
+        
+        var data = [
+        {
+            "label": "Topic 42",
+            "value": 0.0585606794947
+        },
+        {
+            "label": "Topic 4",
+            "value": 0.0414926611315
+        },
+        {
+            "label": "Topic 66",
+            "value": 0.0369931581615
+        },
+        {
+            "label": "Topic 71",
+            "value": 0.0356972653347
+        },
+        {
+            "label": "Topic 113",
+            "value": 0.023849468054
+        },
+        {
+            "label": "Topic 15",
+            "value": 0.0209993145203
+        },
+        {
+            "label": "Topic 8",
+            "value": 0.0178956898751
+        },
+        {
+            "label": "Topic 10",
+            "value": 0.0175463126425
+        },
+        {
+            "label": "Topic 124",
+            "value": 0.013715331443
+        },
+        {
+            "label": "Topic 56",
+            "value": 0.0136476992633
+        },
+        {
+            "label": "Others",
+            "value": 0.0975816362472
+        }
+        ];
+    
+        nv.addGraph(function(){
+            var chart = nv.models.pieChart()
+                .x(function(d) {return d.label})
+                .y(function(d) {return d.value})
+                .showLabels(true);
+            d3.select("#chart svg.pie")
+                .datum(data)
+                .transition().duration(350)
+                .call(chart);
+            return chart;
+            });
+        
+        </script>
+        
+        </body>
+        
+        </html>
+        

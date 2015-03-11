@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="../static/d3.js"></script>
+  <script src="../static/nv.d3.js"></script>
+  <link href="../static/nv.d3.css" rel="stylesheet" type="text/css">
+  <style>
+    text {
+      font: 12px sans-serif;
+    }
+    svg {
+      display: block; 
+    }
+    html, body, #chart, svg{
+      margin: 0px;
+      padding: 0px;
+      height: 100%%;
+      width: 100%%;
+    }
+  </style>
+</head>
+
+<body>
+    
+  <div id="chart">
+      <svg class="pie"></svg>
+      <svg class="area"></svg>
+  </div>
+  
+  <script>
+  
+    var data1 = [
+    {
+        "label": "%s",
+        "value": %s
+    },
+    {
+        "label": "%s",
+        "value": %s
+    },
+    {
+        "label": "%s",
+        "value": %s
+    },
+    {
+        "label": "%s",
+        "value": %s
+    },
+    {
+        "label": "%s",
+        "value": %s
+    },
+    {
+        "label": "%s",
+        "value": %s
+    }
+    ];
+
+    nv.addGraph(function(){
+        var chart1 = nv.models.pieChart()
+            .x(function(d) {return d.label})
+            .y(function(d) {return d.value})
+            .showLabels(true);
+        d3.select("#chart svg.pie")
+            .datum(data1)
+            .transition().duration(350)
+            .call(chart1);
+        return chart1;
+        });
+
+
+
+    d3.json("../static/files/W.json", function(error, data2){
+      var pdata = [];
+      var keys = ["%s", "%s", "%s", "%s", "%s"]
+      for (var key of keys) {
+        var temp = [];
+        for (var year in data2[key]) {
+          temp.push({x: +year, y: +data2[key][year]});
+        }
+        pdata.push({values:temp, key:key, area:true});
+      }
+
+      nv.addGraph(function(){
+        var chart2 = nv.models.lineChart()
+            .margin({left: 100})  //Adjust chart margins to give the x-axis some breathing room.
+            .useInteractiveGuideline(true)  //We want nice looking tooltips and a guideline!
+            // .transitionDuration(350)  //how fast do you want the lines to transition?
+            .showLegend(true)       //Show the legend, allowing users to turn on/off line series.
+            .showYAxis(true)        //Show the y-axis
+            .showXAxis(true)        //Show the x-axis
+            //s.interpolate()
+            ;
+
+        chart2.xAxis     //Chart x-axis settings
+            .axisLabel('Year')
+            .tickFormat(d3.format('r'));
+
+        chart2.yAxis     //Chart y-axis settings
+            .axisLabel('Feature Importance')
+            .tickFormat(d3.format('.04f'));
+
+        /* Done setting the chart up? Time to render it!*/
+        // var myData = sinAndCos();   //You need data...
+
+        d3.select('#chart svg.area')    //Select the <svg> element you want to render the chart in.   
+            .datum(pdata)         //Populate the <svg> element with chart data...
+            .call(chart2);          //Finally, render the chart!
+
+        //Update the chart when window resizes.
+        // nv.utils.windowResize(function() { chart.update() });
+        return chart2;
+      })
+    });
+  
+  </script>
+  
+</body>
+  
+</html>
+    

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="../static/d3.js"></script>
+    <script src="../static/nv.d3.js"></script>
+
+    <link href="../static/nv.d3.css" rel="stylesheet" type="text/css">
+  <script>
+    function draw(data) {
+    "use strict";
+
+    // put visualization code here
+    }
+  </script>
+   <style>
+      text {
+        font: 12px sans-serif;
+      }
+      svg {
+        display: block; 
+        position: absolute;
+        margin: 0px;
+        padding: 0px;
+        width: 100%;
+        height: 50%;
+      }
+      html, body, #chart1{
+        position: absolute;
+        margin: 0px;
+        padding: 0px;
+        width: 100%;
+        height: 100%;
+      }
+    </style>
+</head>
+<body>
+
+  <div id="chart1">
+    <svg></svg>
+  </div>
+
+  <script>
+    // replace file name with path to data file
+    // d3.csv("data/data.csv", draw);
+    var data = [
+      {
+          key: "Country D3 production",
+          values: [
+              {
+                  "label" : "Argentina" ,
+                  "value" : 29.765957771107
+              } ,
+              {
+                  "label" : "Sweden" ,
+                  "value" : 0
+              } ,
+              {
+                  "label" : "China" ,
+                  "value" : 32.807804682612
+              } ,
+              {
+                  "label" : "US" ,
+                  "value" : 196.45946739256
+              } ,
+              {
+                  "label" : "England" ,
+                  "value" : 0.19434030906893
+              } ,
+              {
+                  "label" : "France" ,
+                  "value" : 98.079782601442
+              }
+          ]
+      }
+    ];
+
+    nv.addGraph(function() {
+        var chart = nv.models.discreteBarChart()
+            .x(function(d) { return d.label })
+            .y(function(d) { return d.value })
+            .staggerLabels(true)
+            //.staggerLabels(historicalBarChart[0].values.length > 8)
+            .tooltips(false)
+            .showValues(true)
+            .duration(250)
+            ;
+        d3.select('#chart1 svg')
+          .datum(data)
+          .call(chart);
+        nv.utils.windowResize(chart.update);
+        return chart;
+    });
+
+  </script>
+</body>
+</html>

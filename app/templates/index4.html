@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="../lib/d3.js"></script>
+    <script src="../lib/nv.d3.js"></script>
+
+    <link href="../lib/nv.d3.css" rel="stylesheet" type="text/css">
+  <script>
+    function draw(data) {
+    "use strict";
+    // put visualization code here
+    }
+  </script>
+   <style>
+      text {
+        font: 12px sans-serif;
+      }
+      svg {
+        display: block; 
+      }
+      html, body, #chart1, svg {
+        margin: 0px;
+        padding: 0px;
+        height: 100%;
+        width: 100%;
+      }
+    </style>
+</head>
+
+<body>
+
+  <div id="chart1">
+    <svg></svg>
+  </div>
+
+<script>
+
+var data = [
+      {
+        "label": "One",
+        "value" : 29.765957771107
+      } , 
+      { 
+        "label": "Two",
+        "value" : 0
+      } , 
+      { 
+        "label": "Three",
+        "value" : 32.807804682612
+      } , 
+      { 
+        "label": "Four",
+        "value" : 196.45946739256
+      } , 
+      { 
+        "label": "Five",
+        "value" : 0.19434030906893
+      } , 
+      { 
+        "label": "Six",
+        "value" : 98.079782601442
+      } , 
+      { 
+        "label": "Seven",
+        "value" : 13.925743130903
+      } , 
+      { 
+        "label": "Eight",
+        "value" : 5.1387322875705
+      }
+    ];
+
+
+
+//Regular pie chart example
+nv.addGraph(function() {
+  var chart = nv.models.pieChart()
+      .x(function(d) { return d.label })
+      .y(function(d) { return d.value })
+      .showLabels(true);
+
+    d3.select("#chart1 svg")
+        .datum(data)
+        .transition().duration(350)
+        .call(chart);
+
+  return chart;
+});
+
+    // nv.addGraph(function() {
+    //     var chart = nv.models.pieChart()
+    //         .x(function(d) { return d.label })
+    //         .y(function(d) { return d.value })
+    //         .staggerLabels(true)
+    //         //.staggerLabels(historicalBarChart[0].values.length > 8)
+    //         .tooltips(false)
+    //         .showValues(true)
+    //         .duration(250)
+    //         ;
+    //     d3.select('#chart1 svg')
+    //       .datum(data)
+    //       .call(chart);
+    //     nv.utils.windowResize(chart.update);
+    //     return chart;
+    // });
+
+
+//Pie chart example data. Note how there is only a single array of key-value pairs.
+
+</script>
+
+</body>
+</html>
